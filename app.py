@@ -56,25 +56,27 @@ if map_data and map_data['last_object_clicked']:
 # Fetch the data and display the fields once the location has been selected
 if selected_location:
     # Get id of the selected location 
+    locations = list(locations_df['location'])
     location_id = locations_df[locations_df['location'] == selected_location]['id'].iloc[0] 
     # get weather info from http://www.bom.gov.au/
     json_data = get_weather_info(location_id) 
     st.subheader("Today's Weather Observations")
-    location = st.text_input('Location', value=selected_location)
-    min_temp = st.number_input('Minimum Temperature, °C', value=float(json_data.get('MinTemp')) 
-                               if json_data.get('MinTemp') else None)
-    max_temp = st.number_input('Maximum Temperature, °C', value=float(json_data.get('MinTemp')) 
-                               if json_data.get('MaxTemp') else None)
-    rainfall = st.number_input('Rainfall, mm', value=float(json_data.get('Rainfall')) 
-                               if json_data.get('Rainfall') else None)
-    evaporation = st.number_input('Evaporation, mm', value=float(json_data.get('Evaporation')) 
-                                  if json_data.get('Evaporation') else None)
-    sunshine = st.number_input('Sunshine, hours', value=float(json_data.get('Sunshine')) 
-                               if json_data.get('Sunshine') else None)
+    location = st.selectbox('Location', locations, index=locations.index(selected_location))
+
+    min_temp = st.number_input('Minimum Temperature, °C', min_value=-20.0, max_value=50.0, 
+                               value=float(json_data.get('MinTemp')) if json_data.get('MinTemp') else None)
+    max_temp = st.number_input('Maximum Temperature, °C', min_value=-20.0, max_value=50.0, 
+                               value=float(json_data.get('MinTemp')) if json_data.get('MaxTemp') else None)
+    rainfall = st.number_input('Rainfall, mm', min_value=0.0, max_value=500.0, 
+                               value=float(json_data.get('Rainfall')) if json_data.get('Rainfall') else None)
+    evaporation = st.number_input('Evaporation, mm', min_value=0, max_value=200, 
+                                  value=float(json_data.get('Evaporation')) if json_data.get('Evaporation') else None)
+    sunshine = st.number_input('Sunshine, hours', min_value=0.0, max_value=16.0, 
+                               value=float(json_data.get('Sunshine')) if json_data.get('Sunshine') else None)
     wind_gust_dir_value = str(json_data.get('WindGustDir')) if json_data.get('WindGustDir') else None
     wind_gust_dir = st.selectbox('Strongest Wind Gust Direction', wind_directions, index=wind_directions.index(wind_gust_dir_value))
-    wind_gust_speed = st.number_input('Strongest Wind Gust Speed, km/h', value=float(json_data.get('WindGustSpeed')) 
-                                      if json_data.get('WindGustSpeed') else None)
+    wind_gust_speed = st.number_input('Strongest Wind Gust Speed, km/h', min_value=0.0, max_value=200.0,
+                                      value=float(json_data.get('WindGustSpeed')) if json_data.get('WindGustSpeed') else None)
     rain_today = 'Yes' if rainfall not in (0, None) else 'No'
     
     # Create two columns for 9 am and 3 pm fields
@@ -83,35 +85,34 @@ if selected_location:
     # 9 am fields in the left column
     with col1:
         st.header("9 AM Readings")
-        temp_9am = st.number_input('Temperature, °C', key=6, value=float(json_data.get('Temp9am')) 
-                                   if json_data.get('Temp9am') else None)
-        humidity_9am = st.number_input('Humidity', key=3, value=float(json_data.get('Humidity9am')) 
-                                       if json_data.get('Humidity9am') else None)
-        pressure_9am = st.number_input('Pressure, hPa', key=4, 
-                                       value=float(json_data.get('Pressure9am')) 
-                                       if json_data.get('Pressure9am') else None)
-        cloud_9am = st.number_input('Cloud Amount, 8th', key=5, value=float(json_data.get('Cloud9am')) 
-                                    if json_data.get('Cloud9am') else None)
+        temp_9am = st.number_input('Temperature, °C', key=6, min_value=-20.0, max_value=50.0, 
+                                   value=float(json_data.get('Temp9am')) if json_data.get('Temp9am') else None)
+        humidity_9am = st.number_input('Humidity', key=3, min_value=0.0, max_value=100.0, 
+                                       value=float(json_data.get('Humidity9am')) if json_data.get('Humidity9am') else None)
+        pressure_9am = st.number_input('Pressure, hPa', key=4, min_value=870.0, max_value=1050.0,
+                                       value=float(json_data.get('Pressure9am')) if json_data.get('Pressure9am') else None)
+        cloud_9am = st.number_input('Cloud Amount, 8th', key=5, min_value=0.0, max_value=9.0, 
+                                    value=float(json_data.get('Cloud9am')) if json_data.get('Cloud9am') else None)
         wind_dir_9am_value = str(json_data.get('WindDir9am')) if json_data.get('WindDir9am') else None
         wind_dir_9am = st.selectbox('Wind Direction', wind_directions, key=1, index=wind_directions.index(wind_dir_9am_value))
-        wind_speed_9am = st.number_input('Wind Speed, km/h', key=2, value=float(json_data.get('WindSpeed9am')) 
-                                         if json_data.get('WindSpeed9am') else None)
+        wind_speed_9am = st.number_input('Wind Speed, km/h', key=2, min_value=0.0, max_value=200.0,
+                                         value=float(json_data.get('WindSpeed9am')) if json_data.get('WindSpeed9am') else None)
         
     # 3 pm fields in the right column
     with col2:
         st.header("3 PM Readings")
-        temp_3pm = st.number_input('Temperature, °C', key=12, value=float(json_data.get('Temp3pm')) 
-                                   if json_data.get('Temp3pm') else None)
-        humidity_3pm = st.number_input('Humidity', key=9, value=float(json_data.get('Humidity3pm')) 
-                                       if json_data.get('Humidity3pm') else None)
-        pressure_3pm = st.number_input('Pressure, hPa', key=10, value=float(json_data.get('Pressure3pm')) 
-                                       if json_data.get('Pressure3pm') else None)
-        cloud_3pm = st.number_input('Cloud Amount, 8th', key=11, value=float(json_data.get('Cloud3pm')) 
-                                    if json_data.get('Cloud3pm') else None)
+        temp_3pm = st.number_input('Temperature, °C', key=12, min_value=-20.0, max_value=50.0, 
+                                   value=float(json_data.get('Temp3pm')) if json_data.get('Temp3pm') else None)
+        humidity_3pm = st.number_input('Humidity', key=9, min_value=0.0, max_value=100.0, 
+                                       value=float(json_data.get('Humidity3pm')) if json_data.get('Humidity3pm') else None)
+        pressure_3pm = st.number_input('Pressure, hPa', key=10, min_value=870.0, max_value=1050.0,
+                                       value=float(json_data.get('Pressure3pm')) if json_data.get('Pressure3pm') else None)
+        cloud_3pm = st.number_input('Cloud Amount, 8th', key=11, min_value=0.0, max_value=9.0, 
+                                    value=float(json_data.get('Cloud3pm')) if json_data.get('Cloud3pm') else None)
         wind_dir_3pm_value = str(json_data.get('WindDir3pm')) if json_data.get('WindDir3pm') else None
         wind_dir_3pm = st.selectbox('Wind Direction', wind_directions, key=7, index=wind_directions.index(wind_dir_3pm_value))
-        wind_speed_3pm = st.number_input('Wind Speed, km/h', key=8, value=float(json_data.get('WindSpeed3pm')) 
-                                         if json_data.get('WindSpeed3pm') else None)
+        wind_speed_3pm = st.number_input('Wind Speed, km/h', key=8, min_value=0.0, max_value=200.0, 
+                                         value=float(json_data.get('WindSpeed3pm')) if json_data.get('WindSpeed3pm') else None)
     
     submit = st.button('Predict')
     
