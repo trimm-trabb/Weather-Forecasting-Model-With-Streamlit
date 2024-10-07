@@ -22,6 +22,8 @@ Pandas: Data manipulation and handling.
 
 scikit-learn: Machine learning model for predicting rain.
 
+Joblib: Used for saving and loading the machine learning model. This ensures efficient storage and retrieval of the trained model, enabling quick predictions based on user input.
+
 ## Dataset
 The app uses a historical weather dataset that contains daily weather observations from various locations across Australia (https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package)
 
