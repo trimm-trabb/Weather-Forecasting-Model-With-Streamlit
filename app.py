@@ -7,7 +7,6 @@ from streamlit_folium import st_folium
 from weather_parser import get_weather_info
 import json
 from data_preprocessing import preprocess_new_data
-import plotly.graph_objects as go
 
 def load_model(path):
     return joblib.load(path)
