@@ -4,15 +4,22 @@ The Australia Rain Prediction App is a web application built with Streamlit that
 
 ## Features
 Map Integration: Users can interact with a Folium map to select a location.
+
 Data Retrieval: Today's weather observations for the selected location are fetched from http://www.bom.gov.au/ 
+
 Interactive Input Fields: Users can update weather parameters.
+
 Rain Prediction: Based on the input data, the app provides a prediction on whether it will rain tomorrow.
 
 ## Technologies
 Streamlit: Frontend for creating the interactive web app.
+
 Python: Backend language for data processing and machine learning model handling.
+
 Folium: Map integration for location selection.
+
 Pandas: Data manipulation and handling.
+
 scikit-learn: Machine learning model for predicting rain.
 
 ## Dataset
