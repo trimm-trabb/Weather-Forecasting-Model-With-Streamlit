@@ -4,3 +4,5 @@ scikit-learn
 plotly
 folium
 streamlit_folium
+BeautifulSoup4
+joblib
