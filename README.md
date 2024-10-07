@@ -16,13 +16,15 @@ Streamlit: Frontend for creating the interactive web app.
 
 Python: Backend language for data processing and machine learning model handling.
 
-Folium: Map integration for location selection.
-
 Pandas: Data manipulation and handling.
 
 scikit-learn: Machine learning model for predicting rain.
 
 Joblib: Used for saving and loading the machine learning model. This ensures efficient storage and retrieval of the trained model, enabling quick predictions based on user input.
+
+Folium: Map integration for location selection.
+
+BeautifulSoup: Web scraping and extracting data from HTML, used for weather data gathering.
 
 ## Dataset
 The app uses a historical weather dataset that contains daily weather observations from various locations across Australia (https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package)
