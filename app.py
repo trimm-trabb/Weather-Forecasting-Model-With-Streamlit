@@ -68,7 +68,7 @@ if selected_location:
                                value=float(json_data.get('MinTemp')) if json_data.get('MaxTemp') else None)
     rainfall = st.number_input('Rainfall, mm', min_value=0.0, max_value=500.0, 
                                value=float(json_data.get('Rainfall')) if json_data.get('Rainfall') else None)
-    evaporation = st.number_input('Evaporation, mm', min_value=0, max_value=200, 
+    evaporation = st.number_input('Evaporation, mm', min_value=0.0, max_value=200.0, 
                                   value=float(json_data.get('Evaporation')) if json_data.get('Evaporation') else None)
     sunshine = st.number_input('Sunshine, hours', min_value=0.0, max_value=16.0, 
                                value=float(json_data.get('Sunshine')) if json_data.get('Sunshine') else None)
