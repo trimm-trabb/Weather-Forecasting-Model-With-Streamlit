@@ -1,7 +1,6 @@
 streamlit
 pandas
 scikit-learn
-plotly
 folium
 streamlit_folium
 BeautifulSoup4
