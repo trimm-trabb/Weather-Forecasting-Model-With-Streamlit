@@ -2,6 +2,9 @@
 
 The Australia Rain Prediction App is a web application built with Streamlit that allows users to input weather-related data and predict whether it will rain tomorrow in a given Australian location. The predictions are made using Random Forest machine learning model trained on historical weather data from various regions.
 
+The app can be found here https://australia-rain-prediction-app.streamlit.app/
+
+
 ## Features
 Map Integration: Users can interact with a Folium map to select a location.
 
