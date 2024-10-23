@@ -52,20 +52,20 @@ def create_inputs_targets(df_dict: Dict[str, pd.DataFrame], input_cols: list, ta
         data[f'{split}_targets'] = df_dict[split][target_col].copy()
     return data
 
-def impute_missing_values(data: Dict[str, Any], numeric_cols: list) -> SimpleImputer:
+def impute_missing_values(data: Dict[str, Any], numeric_cols: list) -> IterativeImputer:
     """
-    Impute missing numerical values using the mean strategy.
+    Impute missing numeric values using IterativeImputer that estimates each feature from all the others.
 
     Args:
         data (Dict[str, Any]): Dictionary containing inputs and targets for train, val, and test sets.
         numeric_cols (list): List of numerical columns.
-
+        
     Returns:
-        SimpleImputer: Fitted imputer used for transforming numerical columns in the dataset.
+         IterativeImputer: Fitted imputer used for transforming columns in the dataset.
     """
-    imputer = SimpleImputer(strategy='mean').fit(data['train_inputs'][numeric_cols])
+    imputer = IterativeImputer(max_iter=10, random_state=42).fit(data['train_inputs'][numeric_cols])
     for split in ['train', 'val', 'test']:
-        data[f'{split}_inputs'][numeric_cols] = imputer.transform(data[f'{split}_inputs'][numeric_cols])
+          data[f'{split}_inputs'][numeric_cols] = imputer.transform(data[f'{split}_inputs'][numeric_cols])
 
     return imputer
 
@@ -114,7 +114,7 @@ def encode_categorical_features(data: Dict[str, Any], categorical_cols: list) ->
 
     return encoder, label_encoder
 
-def preprocess_data(raw_df: pd.DataFrame) -> Tuple[Dict[str, Any], SimpleImputer, MinMaxScaler, OneHotEncoder, LabelEncoder, list, list, list, str]:
+def preprocess_data(raw_df: pd.DataFrame) -> Tuple[Dict[str, Any], IterativeImputer, MinMaxScaler, OneHotEncoder, LabelEncoder, list, list, list, str]:
     """
     Preprocess the raw dataframe.
 
@@ -124,7 +124,7 @@ def preprocess_data(raw_df: pd.DataFrame) -> Tuple[Dict[str, Any], SimpleImputer
     Returns:
         Tuple: Contains the following elements:
             - Dictionary containing processed inputs and targets for train, val, and test sets.
-            - Fitted SimpleImputer used for missing value imputation.
+            - Fitted IterativeImputer used for missing value imputation.
             - Fitted MinMaxScaler used for scaling numeric features.
             - Fitted OneHotEncoder used for encoding categorical features.
             - Fitted LabelEncoder used for encoding the target variable.
@@ -161,7 +161,7 @@ def preprocess_data(raw_df: pd.DataFrame) -> Tuple[Dict[str, Any], SimpleImputer
 
     return data_dict, imputer, scaler, encoder, label_encoder, numeric_cols, categorical_cols, input_cols, target_col
 
-def preprocess_new_data(new_data: pd.DataFrame, input_cols: List[str], imputer: SimpleImputer, 
+def preprocess_new_data(new_data: pd.DataFrame, input_cols: List[str], imputer: IterativeImputer, 
                         scaler: MinMaxScaler, encoder: OneHotEncoder) -> pd.DataFrame:
     """
     Preprocesses new data using the provided imputer, scaler and encoder.
@@ -170,7 +170,7 @@ def preprocess_new_data(new_data: pd.DataFrame, input_cols: List[str], imputer: 
         new_data (pd.DataFrame): The new input dataframe to preprocess.
         input_cols (List[str]): List of input column names used in training.
         scaler (MinMaxScaler): The scaler fitted on the training data.
-        imputer (SimpleImputer): The imputer fitted on the training data.
+        imputer (IterativeImputer): The imputer fitted on the training data.
         encoder (OneHotEncoder): The encoder fitted on the training data.
 
     Returns:
