@@ -120,7 +120,7 @@ if selected_location:
                     humidity_9am, humidity_3pm, pressure_9am, pressure_3pm, cloud_9am, 
                     cloud_3pm, temp_9am, temp_3pm, rain_today]
     if submit:
-        model = load_model('models/aussie_rain.joblib')
+        model = load_model('models/aussie_rain_lgbm.joblib')
         res, prob = predict(input_fields, model)
         st.write(f"Will it rain tomorrow? {'Yes' if res == 1 else 'No'}")
         st.write(f"Probability: {prob*100}%")
