@@ -21,7 +21,9 @@ Python: Backend language for data processing and machine learning model handling
 
 Pandas: Data manipulation and handling.
 
-scikit-learn: Machine learning model for predicting rain.
+scikit-learn, XGBoost, LightGBM: Machine learning model for predicting rain.
+
+Hyperopt: ML model hyper-parameter optimization
 
 Joblib: Used for saving and loading the machine learning model. This ensures efficient storage and retrieval of the trained model, enabling quick predictions based on user input.
 
@@ -33,4 +35,4 @@ BeautifulSoup: Web scraping and extracting data from HTML, used for weather data
 The app uses a historical weather dataset that contains daily weather observations from various locations across Australia (https://www.kaggle.com/datasets/jsphyg/weather-dataset-rattle-package)
 
 ## Model
-The machine learning model is trained using historical weather data. The app uses a pre-trained Random Forest Classifier to make predictions. 
+The machine learning model is trained using historical weather data. The app uses a pre-trained LightGBM Classifier to make predictions. 
