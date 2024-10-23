@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-from sklearn.impute import SimpleImputer
+from sklearn.experimental import enable_iterative_imputer 
+from sklearn.impute import IterativeImputer
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder, LabelEncoder
 from typing import Dict, Any, Tuple, List
 
