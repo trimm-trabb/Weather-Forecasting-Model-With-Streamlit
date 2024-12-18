@@ -54,7 +54,8 @@ class RainPredictionApp:
     def render_input_fields(self, weather_data):
         """Display user input fields dynamically based on weather data."""
         st.subheader("Today's Weather Observations")
-    
+        st.text("Update the parameters of the weather today or leave as is. For prediction hit Predict.")
+
         # Location selection dropdown
         location = st.selectbox(
             'Location',
@@ -104,7 +105,6 @@ class RainPredictionApp:
     
         # Rain Today field
         rain_today = 'Yes' if rainfall not in (0, None) else 'No'        
-        st.text(f"Rain Today: {rain_today}")
     
         # Columns for 9 AM and 3 PM Readings
         col1, col2 = st.columns(2)
