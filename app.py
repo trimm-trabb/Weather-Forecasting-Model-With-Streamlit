@@ -6,9 +6,9 @@ import folium
 from folium import Icon
 from typing import Tuple
 from streamlit_folium import st_folium
-from WeatherScraper import WeatherScraper
-from RainPredictorModel import RainPredictorModel
-from Preprocessor import Preprocessor
+from weather_scraper import WeatherScraper
+from rain_predictor_model import RainPredictorModel
+from preprocessor import Preprocessor
 
 # Class to handle UI Components
 class RainPredictionApp:

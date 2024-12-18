@@ -2,7 +2,7 @@ import joblib
 import pandas as pd
 import numpy as np
 from typing import Tuple
-from Preprocessor import Preprocessor
+from preprocessor import Preprocessor
 
 # Class for Model Management
 class RainPredictorModel:
