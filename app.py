@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import folium
 import joblib
+import folium
+from folium import Icon
 from typing import Tuple
 from streamlit_folium import st_folium
 from WeatherScraper import WeatherScraper
@@ -22,14 +23,23 @@ class RainPredictionApp:
 
     def display_header(self):
         st.header('Predict next-day rain in Australia')
+        st.text("This application uses machine learning model to predict whether it will rain tomorrow in a given Australian location.")
+        st.text('Select a location on the map to start:')
 
     def display_map(self):
         """Display a Folium map and handle location selection."""
         m = folium.Map(location=[-28, 133.86], zoom_start=4, min_zoom=4)
-        for _, row in self.locations_df.iterrows():
-            folium.Marker([row['Latitude'], row['Longitude']], tooltip=row['location']).add_to(m)
-        map_data = st_folium(m, width=700, height=500)
 
+        for _, row in self.locations_df.iterrows():
+            folium.Marker(
+                [row['Latitude'], row['Longitude']],
+                tooltip=row['location'],
+                icon=Icon(icon="location-pin", color="blue")  
+            ).add_to(m)
+
+        # Render the map and trigger rerun if necessary
+        map_data = st_folium(m, width=700, height=500)
+        
         if map_data and map_data['last_object_clicked']:
             self.selected_location = map_data['last_object_clicked_tooltip']
 
@@ -44,10 +54,6 @@ class RainPredictionApp:
     def render_input_fields(self, weather_data):
         """Display user input fields dynamically based on weather data."""
         st.subheader("Today's Weather Observations")
-    
-        # Default values for dropdowns
-        wind_directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 
-                           'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
     
         # Location selection dropdown
         location = st.selectbox(
@@ -97,7 +103,7 @@ class RainPredictionApp:
         )
     
         # Rain Today field
-        rain_today = 'Yes' if rainfall > 0 else 'No'
+        rain_today = 'Yes' if rainfall not in (0, None) else 'No'        
         st.text(f"Rain Today: {rain_today}")
     
         # Columns for 9 AM and 3 PM Readings
@@ -127,9 +133,9 @@ class RainPredictionApp:
                 value=float(weather_data.get('Cloud9am', 0.0)) if weather_data.get('Cloud9am') else None
             )
             wind_dir_9am = st.selectbox(
-                'Wind Direction', wind_directions, 
+                'Wind Direction', self.wind_directions, 
                 key="wind_dir_9am", 
-                index=wind_directions.index(weather_data.get('WindDir9am', wind_directions[0]))
+                index=self.wind_directions.index(weather_data.get('WindDir9am', self.wind_directions[0]))
             )
             wind_speed_9am = st.number_input(
                 'Wind Speed, km/h', key="wind_speed_9am", 
@@ -161,9 +167,9 @@ class RainPredictionApp:
                 value=float(weather_data.get('Cloud3pm', 0.0)) if weather_data.get('Cloud3pm') else None
             )
             wind_dir_3pm = st.selectbox(
-                'Wind Direction', wind_directions, 
+                'Wind Direction', self.wind_directions, 
                 key="wind_dir_3pm", 
-                index=wind_directions.index(weather_data.get('WindDir3pm', wind_directions[0]))
+                index=self.wind_directions.index(weather_data.get('WindDir3pm', self.wind_directions[0]))
             )
             wind_speed_3pm = st.number_input(
                 'Wind Speed, km/h', key="wind_speed_3pm", 
@@ -179,8 +185,8 @@ class RainPredictionApp:
     def make_prediction(self, input_fields):
         """Make predictions using the model and display the result."""
         prediction, probability = self.model_manager.predict(input_fields)
-        st.write(f"Will it rain tomorrow? {'Yes' if prediction == 1 else 'No'}")
-        st.write(f"Probability: {probability * 100}%")
+        st.subheader(f"Will it rain tomorrow? {'Yes' if prediction == 1 else 'No'}")
+        st.subheader(f"Probability: {probability * 100}%")
 
     def run(self):
         """Main method to run the app."""
