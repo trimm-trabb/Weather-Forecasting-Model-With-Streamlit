@@ -4,6 +4,8 @@
 
 This is a web application built with Streamlit that allows users to input weather-related data and predict whether it will rain tomorrow in a given Australian location. The predictions are made using LightGBM machine learning model trained on historical weather data from various regions.
 
+The application can be found here https://weather-forecasting-model.streamlit.app/
+
 
 ## Features
 * Map Integration: Users can interact with a Folium map to select a location.
